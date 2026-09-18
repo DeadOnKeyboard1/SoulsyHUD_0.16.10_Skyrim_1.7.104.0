@@ -1,76 +1,89 @@
-# Soulsy
+# SoulsyHUD - Skyrim 1.7.104.0 Compatibility Patch
 
-[![Test Rust features](https://github.com/ceejbot/soulsy/actions/workflows/test.yaml/badge.svg)](https://github.com/ceejbot/soulsy/actions/workflows/test.yaml) [![Build mod archive](https://github.com/ceejbot/soulsy/actions/workflows/build.yaml/badge.svg)](https://github.com/ceejbot/soulsy/actions/workflows/build.yaml)
+An unofficial compatibility update and native SKSE plugin port of **SoulsyHUD** for **The Elder Scrolls V: Skyrim Special Edition / Anniversary Edition runtime 1.7.104.0** (SKSE 2.3.1).
 
-Soulsy is a lightweight, fast Souls-style hotkey HUD mod for Skyrim SE and AE. It is inspired by hotkey mods like Elden Equip, iEquip, and LamasTinyHud. It started life as a fork of [LamasTinyHud](https://github.com/mlthelama/LamasTinyHUD), though it has since diverged significantly.
+This repository contains the source code and build files for the Skyrim 1.7.104.0 compatibility patch. All original mod content, design, and implementation belong to the original author, **[ceejbot](https://github.com/ceejbot)**.
 
-![Screenshot of the hud](./docs/SoulsyHUD_preview.jpeg)
+- **Original Mod on NexusMods:** [SoulsyHUD by ceejbot](https://www.nexusmods.com/skyrimspecialedition/mods/96210/)
+- **Upstream Repository:** [ceejbot/soulsy](https://github.com/ceejbot/soulsy)
+- **Original License:** GNU General Public License v3.0 ([LICENSE](./LICENSE))
 
-The [NexusMods page](https://www.nexusmods.com/skyrimspecialedition/mods/96210/) has screenshots and videos of the HUD in use as well as player documentation. The documentation is more readable here in markdown. See [Configuring the HUD](./docs/article-options.md) and [Customizing Layouts](docs/article-layouts.md).
+---
 
-## Development goals
+## What This Patch Does
 
-My goals are two-fold: make a Souls-style equip HUD that is exactly what I want to use, and learn how to do Rust FFI. A bonus is demonstrating how to write Skyrim native-code mods in Rust.
+1. **Skyrim 1.7.104.0 Runtime Support (SKSE 2.3.1):**
+   - Recompiled native plugin DLL with CommonLibSSE-NG (`alandtse/CommonLibVR`, branch `ng`, commit `1504349dddfc622d4d25704bba19e2ade669dc5a`).
+   - Verified Address Library ID relocations and hook call-sites for runtime 1.7.104.0.
+   - Preserves backward compatibility with previously supported game versions (1.5.97, 1.6.640, 1.6.1130, 1.6.1170) via CommonLibSSE-NG dynamic runtime dispatch.
 
-This project has been released and is in active use. My eventual goal is to move everything except the SKSE plugin glue code to Rust, and have the C++ mostly vanish. There will always be some C++ in the project to interact with the Skyrim reverse-engineered library, which is all in C++ as is the game itself.
+2. **MCM Keybinding Improvements:**
+   - Added `ignoreConflicts: true` to all 13 keymap controls in `config.json`. This allows binding any desired keys (including standard vanilla action keys, number keys 1–8, mouse buttons, and modifier keys like Shift, Ctrl, Alt) without SkyUI conflict blocking.
 
-## Skyrim 1.7.104.0 Support
+3. **Settings Parser Enhancements:**
+   - Improved `FromIniStr` parser in Rust to support unmapped/cleared keys (`-1` -> unassigned) and hex codes, preventing unassigned hotkeys from silently reverting to defaults.
+   - Robust configuration fallback loading: loads base defaults from `Config/SoulsyHUD/settings.ini` and overlays user customizations from `Settings/SoulsyHUD.ini`.
 
-This release branch adds support for **The Elder Scrolls V: Skyrim Special Edition / Anniversary Edition runtime 1.7.104.0** (SKSE 2.3.1), while maintaining compatibility with previously supported runtime versions.
+4. **Modern Toolchain Compatibility:**
+   - Updated Rust `time` dependency to 0.3.44.
+   - Updated C++23 / MSVC compiler compatibility (DirectX buffer casts, sound handle API modernization, and `__cdecl` SKSEAPI trampolines).
 
-Key compatibility updates:
-- Updated to CommonLibSSE-NG (`https://github.com/alandtse/CommonLibVR`, branch `ng`, commit `1504349dddfc622d4d25704bba19e2ade669dc5a`) with verified Skyrim 1.7.104.0 Address Library ID relocations.
-- Updated `time` dependency to 0.3.44 for modern Rust toolchain compatibility.
-- Resolved C++23 / MSVC compiler changes: DirectX buffer casts, sound handle API modernization, and `__cdecl` SKSEAPI trampoline definitions.
-- Enhanced MCM Keymap configuration: Added `ignoreConflicts: true` across all key mapping controls so vanilla keybindings, action keys, and modifier keys can be mapped cleanly.
-- Robust settings parsing: `FromIniStr` handles unmapped/cleared keys (`-1` -> unassigned) and hex codes without reverting to default keys.
+---
 
-## Building
+## Installation
 
-Soulsy is a Rust and C++ project, using CMake to drive Cargo to build the Rust parts. The application logic is implemented in Rust, with a bridge to the C++ libraries required to implement an SKSE plugin. It requires the following to build:
+This patch is an overwrite patch for the original mod:
 
-- [Rust](https://rustup.rs) set up for Windows (MSVC ABI)
-- [Visual Studio 2022](https://visualstudio.microsoft.com) with C++ tools (v143 toolset)
-- [CMake](https://cmake.org) (version 3.22 or higher)
+1. Install the main **[SoulsyHUD](https://www.nexusmods.com/skyrimspecialedition/mods/96210/)** mod via your mod manager (Vortex or Mod Organizer 2).
+2. Install the **[Skyrim 1.7.104.0 Compatibility Patch](https://github.com/DeadOnKeyboard1/SoulsyHUD_0.16.10_Skyrim_1.7.104.0/releases)**.
+3. Ensure the patch loads **after / overwrites** the original mod files (`SoulsyHUD.dll`, `SoulsyHUD.pdb`, and `config.json`).
+
+---
+
+## Building from Source
+
+### Prerequisites
+- [Rust](https://rustup.rs) (MSVC toolchain for Windows)
+- [Visual Studio 2022](https://visualstudio.microsoft.com) with Desktop development with C++ (v143 toolset)
+- [CMake](https://cmake.org) (3.22+)
 - [vcpkg](https://github.com/microsoft/vcpkg) with `VCPKG_ROOT` set in your environment
 
-The plugin requires the following vcpkg libraries, which will be installed automatically:
-
-- [spdlog](https://github.com/gabime/spdlog)
-- [imgui](https://github.com/ocornut/imgui)
-
-Finally, [CommonLibSSE-NG](https://github.com/alandtse/CommonLibVR) is pulled in as a git submodule in `extern/CommonLibSSE-NG`.
+### Dependencies
+- `spdlog`, `imgui` (installed via vcpkg automatically)
+- `CommonLibSSE-NG` (pulled as a git submodule in `extern/CommonLibSSE-NG`)
 
 ### Build Steps
-
 ```powershell
-# Clone with submodules
-git clone --recursive https://github.com/ceejbot/soulsy.git
-cd soulsy
+# Clone the repository with submodules
+git clone --recursive https://github.com/DeadOnKeyboard1/SoulsyHUD_0.16.10_Skyrim_1.7.104.0.git
+cd SoulsyHUD_0.16.10_Skyrim_1.7.104.0
 
-# Configure with CMake preset
+# Configure using the CMake preset
 cmake --preset vs2022-windows
 
-# Build Release DLL
+# Build Release DLL and PDB
 cmake --build --preset vs2022-windows --config Release
 ```
 
-The compiled plugin `SoulsyHUD.dll` and matching `SoulsyHUD.pdb` will be generated in `build/Release/`.
+The compiled `SoulsyHUD.dll` and `SoulsyHUD.pdb` will be placed in `build/Release/`.
 
-You are absolutely invited to contribute. This project follows the standard [Contributor's Covenant](./CODE_OF_CONDUCT.md).
+---
 
-## Credits
+## Credits & Attribution
 
-I could not have approached the rendering code without the work in [LamasTinyHud](https://www.nexusmods.com/skyrimspecialedition/mods/82545), so [mlthelama](https://github.com/mlthelama) gets all the props. I also learned a lot about how to make an SKSE plugin by reading their source. Give that HUD a try if you don't like the souls-game style, or want a UI you can edit in-game. The original is the only hotkeys hud mod I tried that worked well in my game, so that's a testimonial.
+All credit for the original SoulsyHUD mod belongs to **ceejbot** and the upstream contributors:
+- **[ceejbot](https://github.com/ceejbot)** – Creator and lead developer of SoulsyHUD.
+- **[mlthelama](https://github.com/mlthelama)** – Author of [LamasTinyHUD](https://www.nexusmods.com/skyrimspecialedition/mods/82545), from which Soulsy originally diverged.
+- **[MinhazMurks](https://www.nexusmods.com/skyrimspecialedition/users/26341279)** – Untarnished UI skin inspiration.
+- **psychosteve** – SkyUI icons.
+- **Maxicons** – Role Playing Game collection icons (Noun Project).
+- **THICC Team** – Icons from the [THICC icon mod](https://www.nexusmods.com/skyrimspecialedition/mods/90508).
+- **Rasmus Andersson** – [Inter](https://rsms.me/inter/) font.
+- **CharmedBaryon / alandtse** – CommonLibSSE / CommonLibSSE-NG.
 
-The icons for the built-in theme are the usual SkyUI icons, plus the `futura-book-bt` true-type font. The background assets were built from scratch but were inspired by the [Untarnished UI skin](https://www.nexusmods.com/skyrimspecialedition/mods/82545) for LamasTinyHUD by [MinhazMurks](https://www.nexusmods.com/skyrimspecialedition/users/26341279).
-
-The built-in icons are the SkyUI icons by psychosteve, which are used in so many places I am not sure how to credit them. The icons for the Ceej remix layout are licensed to me from the Noun Project for use without attribution, but I am going to give attribution anyway because they're great icons. I am using the [Role Playing Game collection](https://thenounproject.com/browse/collection-icon/role-playing-game-70773/?p=1) by [Maxicons](https://thenounproject.com/maxicons/). The THICC icon pack uses icons with permission from the [THICC icon mod](https://www.nexusmods.com/skyrimspecialedition/mods/90508).
-
-The font in use for some layouts is [Inter](https://rsms.me/inter/).
-
-[cxx](https://cxx.rs/) made developing the C++/Rust bridge a snap. This crate unlocks Rust as a viable language for all of your modding needs. [bindgen](https://rust-lang.github.io/rust-bindgen/introduction.html) is also available for doing this, but `cxx` generates _safer_ C++ bindings by restricting the kinds of code generated. Its major drawback is that async Rust is not yet supported, but there are workarounds described in the docs.
+---
 
 ## License
 
-GPL-3.0.
+This project is licensed under the **GNU General Public License v3.0** ([LICENSE](./LICENSE)), preserving the original licensing of SoulsyHUD.  
+For third-party component licenses, see [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).

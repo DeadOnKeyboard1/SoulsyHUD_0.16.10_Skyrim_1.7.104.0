@@ -1,0 +1,415 @@
+global_scale = 1.0
+anchor_name = "bottom_left"
+hide_ammo_when_irrelevant = true
+hide_left_when_irrelevant = true
+font = "futura-book-bt.ttf"
+font_size = 20.0
+chinese_full_glyphs = false
+simplified_chinese_glyphs = false
+cyrillic_glyphs = false
+japanese_glyphs = false
+korean_glyphs = false
+thai_glyphs = false
+vietnamese_glyphs = false
+
+[anchor]
+x = 0.0
+y = 0.0
+
+[size]
+x = 300.0
+y = 300.0
+
+[background]
+svg = "hud_bg.svg"
+
+[background.size]
+x = 300.0
+y = 300.0
+
+[background.color]
+r = 0
+g = 0
+b = 0
+a = 64
+
+[right.offset]
+x = 83.0
+y = 0.0
+
+[right.icon.size]
+x = 46.0
+y = 46.0
+
+[right.icon.offset]
+x = 0.0
+y = 0.0
+
+[right.icon.color]
+r = 200
+g = 200
+b = 200
+a = 255
+
+[[right.text]]
+alignment = "left"
+contents = "{name}"
+font_size = 20.0
+
+[right.text.offset]
+x = 10.0
+y = 52.0
+
+[right.text.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[right.background]
+svg = "slot_bg.svg"
+
+[right.background.size]
+x = 100.0
+y = 100.0
+
+[right.background.color]
+r = 255
+g = 255
+b = 255
+a = 128
+
+[right.hotkey.size]
+x = 30.0
+y = 30.0
+
+[right.hotkey.offset]
+x = -60.0
+y = 0.0
+
+[right.hotkey.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[right.poison.offset]
+x = 0.0
+y = -40.0
+
+[right.poison.indicator]
+svg = "../icons/indicator_poison.svg"
+
+[right.poison.indicator.size]
+x = 17.0
+y = 17.0
+
+[right.poison.indicator.color]
+r = 160
+g = 240
+b = 2
+a = 255
+
+[left.offset]
+x = -83.0
+y = 0.0
+
+[left.icon.size]
+x = 46.0
+y = 46.0
+
+[left.icon.offset]
+x = 0.0
+y = 0.0
+
+[left.icon.color]
+r = 200
+g = 200
+b = 200
+a = 255
+
+[[left.text]]
+alignment = "left"
+contents = "{name}"
+font_size = 20.0
+
+[left.text.offset]
+x = 125.0
+y = 107.0
+
+[left.text.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[left.background]
+svg = "slot_bg.svg"
+
+[left.background.size]
+x = 100.0
+y = 100.0
+
+[left.background.color]
+r = 255
+g = 255
+b = 255
+a = 128
+
+[left.hotkey.size]
+x = 30.0
+y = 30.0
+
+[left.hotkey.offset]
+x = 60.0
+y = 0.0
+
+[left.hotkey.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[left.poison.offset]
+x = 0.0
+y = -40.0
+
+[left.poison.indicator]
+svg = "../icons/indicator_poison.svg"
+
+[left.poison.indicator.size]
+x = 17.0
+y = 17.0
+
+[left.poison.indicator.color]
+r = 160
+g = 240
+b = 2
+a = 255
+
+[power.offset]
+x = 0.0
+y = -83.0
+
+[power.icon.size]
+x = 46.0
+y = 46.0
+
+[power.icon.offset]
+x = 0.0
+y = 0.0
+
+[power.icon.color]
+r = 200
+g = 200
+b = 200
+a = 255
+
+[[power.text]]
+alignment = "left"
+contents = "{name}"
+font_size = 20.0
+
+[power.text.offset]
+x = 110.0
+y = 110.0
+
+[power.text.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[power.background]
+svg = "slot_bg.svg"
+
+[power.background.size]
+x = 100.0
+y = 100.0
+
+[power.background.color]
+r = 255
+g = 255
+b = 255
+a = 128
+
+[power.hotkey.size]
+x = 30.0
+y = 30.0
+
+[power.hotkey.offset]
+x = 0.0
+y = 60.0
+
+[power.hotkey.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[utility.offset]
+x = 0.0
+y = 83.0
+
+[utility.icon.size]
+x = 46.0
+y = 46.0
+
+[utility.icon.offset]
+x = 0.0
+y = 0.0
+
+[utility.icon.color]
+r = 200
+g = 200
+b = 200
+a = 255
+
+[[utility.text]]
+alignment = "left"
+contents = "{count} {name}"
+font_size = 20.0
+
+[utility.text.offset]
+x = 65.0
+y = -4.0
+
+[utility.text.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[utility.background]
+svg = "slot_bg.svg"
+
+[utility.background.size]
+x = 100.0
+y = 100.0
+
+[utility.background.color]
+r = 255
+g = 255
+b = 255
+a = 128
+
+[utility.hotkey.size]
+x = 30.0
+y = 30.0
+
+[utility.hotkey.offset]
+x = 0.0
+y = -60.0
+
+[utility.hotkey.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[ammo.offset]
+x = -83.0
+y = 0.0
+
+[ammo.icon.size]
+x = 46.0
+y = 46.0
+
+[ammo.icon.offset]
+x = 0.0
+y = 0.0
+
+[ammo.icon.color]
+r = 200
+g = 200
+b = 200
+a = 255
+
+[[ammo.text]]
+alignment = "left"
+contents = "{count} {name}"
+font_size = 20.0
+
+[ammo.text.offset]
+x = 125.0
+y = 107.0
+
+[ammo.text.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[ammo.background]
+svg = "slot_bg.svg"
+
+[ammo.background.size]
+x = 100.0
+y = 100.0
+
+[ammo.background.color]
+r = 255
+g = 255
+b = 255
+a = 128
+
+[ammo.hotkey.size]
+x = 30.0
+y = 30.0
+
+[ammo.hotkey.offset]
+x = 60.0
+y = 0.0
+
+[ammo.hotkey.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[equipset.offset]
+x = 83.0
+y = -83.0
+
+[equipset.icon.size]
+x = 46.0
+y = 46.0
+
+[equipset.icon.offset]
+x = 0.0
+y = 0.0
+
+[equipset.icon.color]
+r = 200
+g = 200
+b = 200
+a = 255
+
+[[equipset.text]]
+alignment = "left"
+contents = "{name}"
+font_size = 20.0
+
+[equipset.text.offset]
+x = 50.0
+y = 5.0
+
+[equipset.text.color]
+r = 255
+g = 255
+b = 255
+a = 255
+
+[equipset.hotkey.size]
+x = 30.0
+y = 30.0
+
+[equipset.hotkey.offset]
+x = 60.0
+y = -10.0
+
+[equipset.hotkey.color]
+r = 255
+g = 255
+b = 255
+a = 255

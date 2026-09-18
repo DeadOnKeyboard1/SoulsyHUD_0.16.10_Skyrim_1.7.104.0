@@ -1,0 +1,244 @@
+# THIS IS A TEST FIXTURE.
+global_scale = 2.0
+
+anchor_name = "bottom_left"
+
+# anchor = { x = 2100.0, y = 825.0 }
+
+size = { x = 190.0, y = 250.0 }
+
+hide_ammo_when_irrelevant = true
+hide_left_when_irrelevant = true
+
+font = "futura-book-bt.ttf"
+font_size = 18.0
+
+chinese_full_glyphs = false
+simplified_chinese_glyphs = false
+cyrillic_glyphs = false
+japanese_glyphs = false
+korean_glyphs = false
+thai_glyphs = false
+vietnamese_glyphs = false
+
+[background]
+svg = "hud_bg.svg"
+size = { x = 190.0 , y = 250.0}
+color = { r = 0, g = 0, b = 0, a = 64 }
+
+# ----- right hand slot
+[right]
+offset = { x = 375.0, y = 0.0 }
+
+[right.background]
+svg = "slot_bg.svg"
+size = { x = 100.0 , y = 100.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+
+[right.icon]
+size = { x = 60.0, y = 60.0 }
+offset = { x = 0.0, y = 0.0 }
+color = { r = 200, g = 200, b = 200, a = 255 }
+
+[right.hotkey]
+size = { x = 30.0, y = 30.0 }
+offset = { x = -50.0, y = 0.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+[right.hotkey.background]
+svg = "key_bg.svg"
+size = { x = 30.0 , y = 30.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+
+[right.poison]
+offset = { x = 20.0, y = 20.0 }
+[right.poison.indicator]
+svg = "poison.svg"
+color = {r = 160, g = 240, b = 2, a = 255 }
+size = { x = 10.0, y = 10.0 }
+
+[[right.text]]
+alignment = "right"
+offset = { x = 0.0, y = 0.0 }
+color = { r = 255, g = 255, b = 255, a = 0 }
+font_size = 18.0
+contents = "{count} {name}"
+
+[right.meter]
+angle = 90 # vertical
+offset = { x = 20.0, y = 20.0 }
+[right.meter.background]
+size = { x = 10.0, y = 100.0 }
+svg = "meter_bar_filled.svg"
+color = { r = 0, g = 0, b = 0, a = 255 }
+[right.meter.filled]
+size = { x = 8.0, y = 98.0 }
+svg = ""
+color = { r = 59, g = 106, b = 249, a = 200 }
+
+# ----- left hand slot
+
+[left]
+offset = { x = 250.0, y = 0.0 }
+
+[left.background]
+svg = "slot_bg.svg"
+size = { x = 100.0 , y = 100.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+
+[left.icon]
+size = { x = 60.0, y = 60.0 }
+offset = { x = 0.0, y=0.0 }
+color = {r = 200, g = 200, b = 200, a = 255}
+
+[left.hotkey]
+size = { x = 30.0, y = 30.0 }
+offset = { x = -50.0, y = 0.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+[left.hotkey.background]
+svg = "key_bg.svg"
+size = { x = 30.0 , y = 30.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+
+[[left.text]]
+alignment = "left"
+offset = { x = -50.0, y = 55.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+font_size = 18.0
+contents = "{count} {name}"
+
+[left.meter]
+angle = 0 # horizontal
+offset = { x = 20.0, y = 20.0 }
+[left.meter.background]
+size = { x = 100.0, y = 20.0 }
+svg = "meter_bar_empty.svg"
+color = { r = 255, g = 255, b = 255, a = 255 }
+[left.meter.filled]
+size = { x = 98.0, y = 16.0 }
+svg = "meter_bar_filled.svg"
+color = { r = 59, g = 106, b = 249, a = 200 }
+
+# ----- utility slot
+
+[utility]
+offset = { x = 125.0, y = 0.0 }
+[utility.background]
+svg = "slot_bg.svg"
+size = { x = 100.0 , y = 100.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+[utility.icon]
+size = { x = 60.0, y = 60.0 }
+offset = { x = 0.0, y=0.0 }
+color = {r = 200, g = 200, b = 200, a = 255}
+[utility.hotkey]
+size = { x = 30.0, y = 30.0 }
+offset = { x = -50.0, y = 0.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+[utility.hotkey.background]
+svg = "key_bg.svg"
+size = { x = 30.0 , y = 30.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+[[utility.text]]
+alignment = "left"
+offset = { x = 15.0, y = 15.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+font_size = 24.0
+contents = "{count}"
+[[utility.text]]
+alignment = "left"
+offset = { x = -50.0, y = 55.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+font_size = 18.0
+contents = "{name}"
+
+# ----- power slot
+
+[power]
+offset = { x = 0.0, y = 0.0 }
+[power.background]
+svg = "slot_bg.svg"
+size = { x = 100.0 , y = 100.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+[power.icon]
+size = { x = 60.0, y = 60.0 }
+offset = { x = 0.0, y=0.0 }
+color = {r = 200, g = 200, b = 200, a = 255}
+[power.hotkey]
+size = { x = 30.0, y = 30.0 }
+offset = { x = -50.0, y = 0.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+[power.hotkey.background]
+svg = "key_bg.svg"
+size = { x = 30.0 , y = 30.0}
+color = { r = 255, g = 255, b = 255, a = 128 }
+
+[[power.text]]
+alignment = "center"
+offset = { x = 0.0, y = 55.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+font_size = 18.0
+contents = "{name}"
+
+[power.meter]
+offset = { x = 0.0, y = 0.0 }
+size = { x = 70.0, y = 10.0 }
+svg = "meter_bar_vertical.svg"
+empty_color = { r = 0, g = 0, b = 0, a = 255 }
+fill_color =  { r = 255, g = 255, b = 255, a = 255 }
+start_angle = 0
+end_angle = 180
+fill_width = 10.0
+
+# ----- ammo slot
+
+[ammo]
+offset = { x = 250.0, y = 0.0 }
+[ammo.background]
+svg = "slot_bg.svg"
+size = { x = 100.0 , y = 100.0 }
+color = { r = 255, g = 255, b = 255, a = 128 }
+[ammo.icon]
+color = { r = 200, g = 200, b = 200, a = 255 }
+size = { x = 60.0, y = 60.0 }
+offset = { x = 0.0, y=0.0 }
+[ammo.hotkey]
+size = { x = 30.0, y = 30.0 }
+offset = { x = -50.0, y = 0.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+# Note that this slot separates count and name, and uses
+# a text element for each.
+[[ammo.text]]
+alignment = "left"
+contents = "{count}"
+color = { r = 200, g = 200, b = 200, a = 255 }
+font_size = 24.0
+offset = { x = 15.0, y = 15.0 }
+[[ammo.text]]
+alignment = "left"
+contents = "{name}"
+offset = { x = -50, y =  55.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+font_size = 18.0
+
+# ----- equipset slot
+
+[equipset]
+align_text = "center"
+offset = { x = 0.0, y = -125.0 }
+[equipset.background]
+svg = "slot_bg.svg"
+size = { x = 100.0 , y = 100.0 }
+color = { r = 255, g = 255, b = 255, a = 128 }
+[equipset.icon]
+color = { r = 200, g = 200, b = 200, a = 255 }
+size = { x = 60.0, y = 60.0 }
+offset = { x = 0.0, y=0.0 }
+[equipset.hotkey]
+color = { r = 255, g = 255, b = 255, a = 255 }
+offset = { x = -50.0, y = 0.0 }
+size = { x = 30.0, y = 30.0 }
+[[equipset.text]]
+contents = "{name}"
+offset = { x = 0.0, y = -75.0 }
+color = { r = 255, g = 255, b = 255, a = 255 }
+font_size = 18.0

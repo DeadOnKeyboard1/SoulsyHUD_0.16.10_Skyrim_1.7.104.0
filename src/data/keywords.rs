@@ -1,0 +1,1068 @@
+//! Magic effect keywords from OCF, the base game, and some spell packs.
+//!
+//! Soulsy distributes some keywords to spells and shouts in vanilla and
+//! in various spell packs to identify them for iconnification.
+//! Mostly it relies on OCF's new-ish magic effect keywords.
+
+use enumset::{enum_set, EnumSet, EnumSetType};
+use strum::{Display, EnumIter, IntoEnumIterator};
+
+use crate::images::Icon;
+
+use super::color::InvColor;
+
+impl TryFrom<&str> for SpellKeywords {
+    type Error = eyre::Error;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        let keystr = value
+            .to_lowercase()
+            .replace("soulsy_", "")
+            .replace("ocf_mgef", "");
+        let keywd = SpellKeywords::iter().find(|xs| keystr == xs.to_string());
+        if let Some(k) = keywd {
+            Ok(k)
+        } else {
+            Err(eyre::eyre!("not a valid soulsy magic keyword"))
+        }
+    }
+}
+
+#[derive(Debug, Hash, Display, EnumIter, EnumSetType)]
+#[strum(serialize_all = "lowercase")]
+pub enum SpellKeywords {
+    // Some vanilla and mod spell archetypes to mark with keywords
+    Archetype_CarryWeight,
+    Archetype_Cure,
+    Archetype_Detect,
+    Archetype_Guide,
+    Archetype_Light,
+    Archetype_NightEye,
+    Archetype_Protect,
+    Archetype_Reflect,
+    Archetype_Resist,
+    Archetype_Root,
+    Archetype_Silence,
+    Archetype_Teleport,
+    Archetype_Waterbreathing,
+    Archetype_Waterwalking,
+    Archetype_WeaponBuff,
+
+    // Hints about which art to use.
+    // ArtBall,
+    // ArtBlast,
+    // ArtBolt,
+    // ArtBreath,
+    // ArtChainLightning,
+    // ArtFlame,
+    // ArtLightning,
+    // ArtProjectile,
+    // ArtSpike,
+    // ArtStorm,
+    // ArtTornado,
+    // ArtWall,
+
+    // Bound weapon types
+    BoundWarAxe,
+    BoundBattleAxe,
+    BoundBow,
+    BoundDagger,
+    BoundHammer,
+    BoundMace,
+    BoundShield,
+    BoundSword,
+    BoundGreatsword,
+
+    // vanilla magic keywords
+    MagicArmorSpell,
+    MagicCloak,
+    MagicDamageFire,
+    MagicDamageFrost,
+    MagicDamageResist,
+    MagicDamageShock,
+    MagicInfluence,
+    MagicInfluenceCharm,
+    MagicInfluenceFear,
+    MagicInfluenceFrenzy,
+    MagicInvisibility,
+    MagicNightEye,
+    MagicParalysis,
+    MagicRestoreHealth,
+    MagicRune,
+    MagicSlow,
+    MagicSummonFamiliar,
+    MagicSummonFire,
+    MagicSummonFrost,
+    MagicSummonShock,
+    MagicSummonUndead,
+    MagicTelekinesis,
+    MagicTurnUndead,
+    MagicVampireDrain,
+    MagicWard,
+    MagicWeaponSpeed,
+
+    // from OCF and others
+    MAG_MagicDamageSun,
+    IconWind,
+    IconMagicWind,
+    IconWater,
+    IconMagicWater,
+    DAR_SummonAstralWyrm,
+
+    // Vampire and werewolf icons.
+    Power_Bats,
+    Power_RevertForm,
+    Power_Vampire,
+    Spell_Blood,
+
+    // vanilla shouts
+    Shout_AnimalAllegiance,
+    Shout_AuraWhisper,
+    Shout_BattleFury,
+    Shout_BecomeEthereal,
+    Shout_BendWill,
+    Shout_CallDragon,
+    Shout_CallOfValor,
+    Shout_ClearSkies,
+    Shout_Disarm,
+    Shout_Dismay,
+    Shout_DragonAspect,
+    Shout_Dragonrend,
+    Shout_DrainVitality,
+    Shout_ElementalFury,
+    Shout_FireBreath,
+    Shout_FrostBreath,
+    Shout_IceForm,
+    Shout_KynesPeace,
+    Shout_MarkedForDeath,
+    Shout_Slowtime,
+    Shout_SoulTear,
+    Shout_Stormcall,
+    Shout_SummonDurnehviir,
+    Shout_ThrowVoice,
+    Shout_UnrelentingForce,
+    Shout_WhirlwindSprint,
+    Shout_PhantomForm,
+    Shout_SoulCairnSummon,
+    Shout_LightningBreath,
+    Shout_PoisonBreath,
+    Shout_AlessiasLove,
+    Shout_Annihilate,
+    Shout_ArcaneHelix,
+    Shout_Armageddon,
+    Shout_Curse,
+    Shout_DanceOfTheDead,
+    Shout_Earthquake,
+    Shout_EssenceRip,
+    Shout_Evocation,
+    Shout_Geomagnetism,
+    Shout_Iceborn,
+    Shout_JonesShadow,
+    Shout_Kingsbane,
+    Shout_Lifestream,
+    Shout_LightningShield,
+    Shout_Oblivion,
+    Shout_PhantomDecoy,
+    Shout_Riftwalk,
+    Shout_Shattersphere,
+    Shout_ShorsWrath,
+    Shout_ShroudOfSnowfall,
+    Shout_SpeakUntoTheStars,
+    Shout_SplinterTwins,
+    Shout_Stormblast,
+    Shout_TheConqueror,
+    Shout_Trueshot,
+    Shout_WailOfTheBanshee,
+    Shout_Wanderlust,
+    Shout_Warcry,
+
+    // From here on it's OCF keywords minus the prefix
+    ClassArcane,
+    ClassArtificer,
+    ClassAsh,
+    ClassAstral,
+    ClassBard,
+    ClassBlood,
+    ClassDruid,
+    ClassDunmer,
+    ClassEarth,
+    ClassEldritch,
+    ClassFire,
+    ClassFrost,
+    ClassHoly,
+    ClassMind,
+    ClassNecromancy,
+    ClassPoison,
+    ClassRace_Altmer,
+    ClassRace_Argonian,
+    ClassRace_Bosmer,
+    ClassRace_Breton,
+    ClassRace_Dunmer,
+    ClassRace_Imperial,
+    ClassRace_Khajiit,
+    ClassRace_Nord,
+    ClassRace_Orsimer,
+    ClassRace_Other,
+    ClassRace_Redguard,
+    ClassRace_Vampire,
+    ClassRace_Werebeast,
+    ClassShadow,
+    ClassShock,
+    ClassSurvival_Needs,
+    ClassSurvival_Wilderness,
+    ClassSurvival,
+    ClassUtility,
+    ClassVampire,
+    ClassWater,
+    ClassWind,
+    ClassWitcher,
+    DeliverTouch,
+    OCF_MiscQuiver,
+    PowerAction_Bag,
+    PowerAction_Bard,
+    PowerAction_Bathe,
+    PowerAction_Bless,
+    PowerAction_BuryCorpse,
+    PowerAction_Campfire,
+    PowerAction_Coin,
+    PowerAction_CommandFollower,
+    PowerAction_Craft,
+    PowerAction_FillWater,
+    PowerAction_Goggles,
+    PowerAction_GogglesSight,
+    PowerAction_HarvestCorpse,
+    PowerAction_HarvestGather,
+    PowerAction_HarvestWood,
+    PowerAction_Horse,
+    PowerAction_Influence,
+    PowerAction_InfluenceEngage,
+    PowerAction_Instincts,
+    PowerAction_Lantern,
+    PowerAction_PeekKeyhole,
+    PowerAction_PitchTent,
+    PowerAction_Potion,
+    PowerAction_Pray,
+    PowerAction_Relax,
+    PowerAction_Speech,
+    PowerAction_StatusFrostfall,
+    PowerAction_StatusSunhelm,
+    PowerAction_TameAnimal,
+    PowerAction_Train,
+    PowerAction_WeaponGrip,
+    PowerAction,
+    PowerAlteration,
+    PowerCheat,
+    PowerConfig,
+    PowerConfigWeatherChanger,
+    PowerGrand,
+    Spell_Enchant,
+    SpellAbsorb_Magicka,
+    SpellAbsorb_MagickaCircle,
+    SpellAbsorb_MagickaCloak,
+    SpellAbsorb_Stamina,
+    SpellAbsorb_StaminaCircle,
+    SpellAbsorb_StaminaCloak,
+    SpellAssist_DamageDruid,
+    SpellAssist_MovementSpeedDruid,
+    SpellAssist,
+    SpellBound_Ammo,
+    SpellBound_Armor,
+    SpellBound_MiscItem,
+    SpellBound_Weapon,
+    SpellControl,
+    SpellCounter_Astral,
+    SpellCounter_BloodDruid,
+    SpellCounter_Druid,
+    SpellCounter_DruidHeal,
+    SpellCounter_Fire,
+    SpellCure,
+    SpellCurse_Deconstruct,
+    SpellCurse_DruidRoot,
+    SpellCurse_Shadow,
+    SpellCurse,
+    SpellDamage_Arcane,
+    SpellDamage_ArcaneCloak,
+    SpellDamage_ArcaneFire,
+    SpellDamage_ArcaneFireCloak,
+    SpellDamage_Ash,
+    SpellDamage_AshCloak,
+    SpellDamage_AshFire,
+    SpellDamage_AshFireCloak,
+    SpellDamage_Astral,
+    SpellDamage_AstralCloak,
+    SpellDamage_Blood,
+    SpellDamage_BloodCloak,
+    SpellDamage_BloodShock,
+    SpellDamage_BloodShockCloak,
+    SpellDamage_Construct,
+    SpellDamage_Deconstruct,
+    SpellDamage_DeconstructCloak,
+    SpellDamage_Disease,
+    SpellDamage_DiseaseCloak,
+    SpellDamage_Earth,
+    SpellDamage_EarthCloak,
+    SpellDamage_Fire,
+    SpellDamage_FireArcane,
+    SpellDamage_FireArcaneCloak,
+    SpellDamage_FireCloak,
+    SpellDamage_FireCloakDunmer,
+    SpellDamage_FireCold,
+    SpellDamage_FireColdCloak,
+    SpellDamage_FireShock,
+    SpellDamage_FireShockCloak,
+    SpellDamage_FireShockFrost,
+    SpellDamage_FireShockFrostCloak,
+    SpellDamage_Force,
+    SpellDamage_ForceCloak,
+    SpellDamage_Frost,
+    SpellDamage_FrostCloak,
+    SpellDamage_FrostFire,
+    SpellDamage_FrostFireCloak,
+    SpellDamage_Holy,
+    SpellDamage_HolyAstral,
+    SpellDamage_HolyAstralCloak,
+    SpellDamage_HolyCloak,
+    SpellDamage_HolyLunar,
+    SpellDamage_HolyLunarCloak,
+    SpellDamage_Light,
+    SpellDamage_LightCloak,
+    SpellDamage_Necrotic,
+    SpellDamage_NecroticCloak,
+    SpellDamage_NecroticFire,
+    SpellDamage_NecroticFireCloak,
+    SpellDamage_Poison,
+    SpellDamage_PoisonBug,
+    SpellDamage_PoisonBugCloak,
+    SpellDamage_PoisonCloak,
+    SpellDamage_PoisonDoomstone,
+    SpellDamage_PoisonEldritch,
+    SpellDamage_PoisonEldritchCloak,
+    SpellDamage_Shadow,
+    SpellDamage_ShadowCloak,
+    SpellDamage_Shock,
+    SpellDamage_ShockArc,
+    SpellDamage_ShockArcCloak,
+    SpellDamage_ShockCloak,
+    SpellDamage_ShockStorm,
+    SpellDamage_ShockStormCloak,
+    SpellDamage_Sonic,
+    SpellDamage_SonicCloak,
+    SpellDamage_Steam,
+    SpellDamage_SteamCloak,
+    SpellDamage_Water,
+    SpellDamage_WaterCloak,
+    SpellDamage_Wind,
+    SpellDamage_WindCloak,
+    SpellDispel,
+    SpellDivination,
+    SpellEnchant,
+    SpellEnhance_Attack,
+    SpellEnhance_Blood,
+    SpellEnhance_CarryWeight,
+    SpellEnhance_Casting,
+    SpellEnhance_CastingDruid,
+    SpellEnhance_CastingEldritch,
+    SpellEnhance_CritShadowInvis,
+    SpellEnhance_Damage,
+    SpellEnhance_DamageArcane,
+    SpellEnhance_DamageAshFire,
+    SpellEnhance_DamageBlood,
+    SpellEnhance_DamageBloodDruid,
+    SpellEnhance_DamageDruidHunter,
+    SpellEnhance_DamageFire,
+    SpellEnhance_DamageFrost,
+    SpellEnhance_DamageHolyAstral,
+    SpellEnhance_DamageHolyLunar,
+    SpellEnhance_DamagePoison,
+    SpellEnhance_DamagePoisonEldritch,
+    SpellEnhance_DamageShadow,
+    SpellEnhance_DamageShock,
+    SpellEnhance_DamageShockArc,
+    SpellEnhance_Dodge,
+    SpellEnhance_Eldritch,
+    SpellEnhance_EldritchTome,
+    SpellEnhance_Evasion,
+    SpellEnhance_EvasionDruid,
+    SpellEnhance_Fall,
+    SpellEnhance_Flight,
+    SpellEnhance_Health,
+    SpellEnhance_Jump,
+    SpellEnhance_MovementSpeed,
+    SpellEnhance_MovementSpeedDruid,
+    SpellEnhance_Regen,
+    SpellEnhance_RegenShadowInvis,
+    SpellEnhance_Sight,
+    SpellEnhance_SightKhajiit,
+    SpellEnhance_SightVampireBlood,
+    SpellEnhance_SightVampireShadow,
+    SpellEnhance_SightWerebeast,
+    SpellEnhance_SpellCost,
+    SpellEnhance_StaminaDruid,
+    SpellEnhance_Swim,
+    SpellEnhance_WaterBreath,
+    SpellEnhance_WaterWalk,
+    SpellEthereal,
+    SpellForce,
+    SpellHarvest,
+    SpellHeal_Construct,
+    SpellHeal_Daedra,
+    SpellHeal_Living,
+    SpellHeal_LivingCircle,
+    SpellHeal_LivingWater,
+    SpellHeal_Self,
+    SpellHeal_SelfCloak,
+    SpellHeal_Undead,
+    SpellLight,
+    SpellMind_Charm,
+    SpellMind_CharmImperial,
+    SpellMind_Control,
+    SpellMind_ControlBosmer,
+    SpellMind_ControlVampire,
+    SpellMind_Courage,
+    SpellMind_Fear,
+    SpellMind_FearNord,
+    SpellMind_FearVampire,
+    SpellMind_Frenzy,
+    SpellMind_FrenzyShadow,
+    SpellMind_Paralysis,
+    SpellMind_Rally,
+    SpellParalysis_Ash,
+    SpellParalysis_AshCloak,
+    SpellParalysis_Druid,
+    SpellParalysis,
+    SpellProject,
+    SpellProtect_Damage,
+    SpellProtect_ElementFire,
+    SpellProtect_ElementFrost,
+    SpellProtect_ElementPoison,
+    SpellProtect_ElementShock,
+    SpellProtect_Magic,
+    SpellProtect_Warmth,
+    SpellReanimate,
+    SpellReanimateDoomstone,
+    SpellReflect_Druid,
+    SpellRestore_Exposure,
+    SpellRestore_Magicka,
+    SpellRestore_MagickaCircle,
+    SpellRestore_MagickaWater,
+    SpellRestore_Stamina,
+    SpellRestore_StaminaCircle,
+    SpellRestore_StaminaDruid,
+    SpellRestore_Warmth,
+    SpellSacrifice_Blood,
+    SpellSacrifice,
+    SpellShapechange_Vampire,
+    SpellShapechange_Werebeast,
+    SpellShapechange,
+    SpellShield_Druid,
+    SpellShield_Warmth,
+    SpellSilence,
+    SpellSoulTrap,
+    SpellSoulTrapCloak,
+    SpellSpace_Banish,
+    SpellSpace_Teleport,
+    SpellSpace,
+    SpellStealth_Invisibility,
+    SpellStealth_InvisibilityDoomstone,
+    SpellStealth_InvisibilityDruid,
+    SpellStealth_InvisibilityVampire,
+    SpellStealth,
+    SpellSummon_Construct,
+    SpellSummon_Creature,
+    SpellSummon_Daedra,
+    SpellSummon_Object,
+    SpellSummon_Spirit,
+    SpellSummon_Undead,
+    SpellTeleport,
+    SpellTime,
+    SpellTransmute,
+    SpellTurnUndeadCircle,
+    SpellUnlock,
+    SpellWard,
+}
+
+// ----------- spell archetypes
+
+pub const ICON_BUFF: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellEnhance_Attack
+        | SpellKeywords::SpellEnhance_Casting
+        | SpellKeywords::SpellEnhance_CastingDruid
+        | SpellKeywords::SpellEnhance_CastingEldritch
+        | SpellKeywords::SpellEnhance_CritShadowInvis
+        | SpellKeywords::SpellEnhance_Damage
+        | SpellKeywords::SpellEnhance_DamageArcane
+        | SpellKeywords::SpellEnhance_DamageAshFire
+        | SpellKeywords::SpellEnhance_DamageBlood
+        | SpellKeywords::SpellEnhance_DamageBloodDruid
+        | SpellKeywords::SpellEnhance_DamageDruidHunter
+        | SpellKeywords::SpellEnhance_DamageFire
+        | SpellKeywords::SpellEnhance_DamageFrost
+        | SpellKeywords::SpellEnhance_DamageHolyAstral
+        | SpellKeywords::SpellEnhance_DamageHolyLunar
+        | SpellKeywords::SpellEnhance_DamagePoison
+        | SpellKeywords::SpellEnhance_DamagePoisonEldritch
+        | SpellKeywords::SpellEnhance_DamageShadow
+        | SpellKeywords::SpellEnhance_DamageShock
+        | SpellKeywords::SpellEnhance_DamageShockArc
+        | SpellKeywords::SpellEnhance_Dodge
+        | SpellKeywords::SpellEnhance_EldritchTome
+        | SpellKeywords::SpellEnhance_EvasionDruid
+        | SpellKeywords::SpellEnhance_Fall
+        | SpellKeywords::SpellEnhance_Health
+        | SpellKeywords::SpellEnhance_Jump
+        | SpellKeywords::SpellEnhance_MovementSpeedDruid
+        | SpellKeywords::SpellEnhance_Regen
+        | SpellKeywords::SpellEnhance_RegenShadowInvis
+        | SpellKeywords::SpellEnhance_StaminaDruid
+        | SpellKeywords::SpellEnhance_Swim
+        | SpellKeywords::SpellEnhance_WaterWalk
+);
+
+pub const ICON_CLOAK: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicCloak
+        | SpellKeywords::SpellAbsorb_MagickaCloak
+        | SpellKeywords::SpellAbsorb_StaminaCloak
+        | SpellKeywords::SpellDamage_ArcaneCloak
+        | SpellKeywords::SpellDamage_ArcaneFireCloak
+        | SpellKeywords::SpellDamage_AshFireCloak
+        | SpellKeywords::SpellDamage_BloodCloak
+        | SpellKeywords::SpellDamage_BloodShockCloak
+        | SpellKeywords::SpellDamage_EarthCloak
+        | SpellKeywords::SpellDamage_FireCloak
+        | SpellKeywords::SpellDamage_FireCloakDunmer
+        | SpellKeywords::SpellDamage_FireShockFrostCloak
+        | SpellKeywords::SpellDamage_FrostCloak
+        | SpellKeywords::SpellDamage_FrostFireCloak
+        | SpellKeywords::SpellDamage_HolyAstralCloak
+        | SpellKeywords::SpellDamage_HolyCloak
+        | SpellKeywords::SpellDamage_HolyLunarCloak
+        | SpellKeywords::SpellDamage_LightCloak
+        | SpellKeywords::SpellDamage_NecroticCloak
+        | SpellKeywords::SpellDamage_NecroticFireCloak
+        | SpellKeywords::SpellDamage_PoisonBugCloak
+        | SpellKeywords::SpellDamage_PoisonCloak
+        | SpellKeywords::SpellDamage_PoisonEldritchCloak
+        | SpellKeywords::SpellDamage_ShadowCloak
+        | SpellKeywords::SpellDamage_ShockArcCloak
+        | SpellKeywords::SpellDamage_ShockCloak
+        | SpellKeywords::SpellDamage_ShockStormCloak
+        | SpellKeywords::SpellDamage_SonicCloak
+        | SpellKeywords::SpellDamage_SteamCloak
+        | SpellKeywords::SpellDamage_WaterCloak
+        | SpellKeywords::SpellDamage_WindCloak
+);
+
+pub const ICON_FIRE: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellDamage_Fire
+        | SpellKeywords::SpellDamage_FireCold
+        | SpellKeywords::SpellDamage_FireArcane
+        | SpellKeywords::SpellDamage_FireShock
+        | SpellKeywords::SpellDamage_FrostFire
+);
+
+pub const ICON_CIRCLE: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellHeal_LivingCircle
+        | SpellKeywords::SpellAbsorb_MagickaCircle
+        | SpellKeywords::SpellAbsorb_StaminaCircle
+        | SpellKeywords::SpellRestore_MagickaCircle
+        | SpellKeywords::SpellRestore_StaminaCircle
+);
+
+pub const ICON_DRUID: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::ClassDruid | SpellKeywords::SpellCounter_DruidHeal);
+
+pub const ICON_CONTROL: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicInfluence
+        | SpellKeywords::MagicInfluenceCharm
+        | SpellKeywords::SpellControl
+        | SpellKeywords::SpellMind_Charm
+        | SpellKeywords::SpellMind_CharmImperial
+        | SpellKeywords::SpellMind_Control
+        | SpellKeywords::SpellMind_ControlBosmer
+        | SpellKeywords::SpellMind_ControlVampire
+);
+
+pub const ICON_EARTH: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::ClassEarth | SpellKeywords::SpellDamage_Earth);
+
+pub const ICON_FEAR: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicInfluenceFear
+        | SpellKeywords::SpellMind_Fear
+        | SpellKeywords::SpellMind_FearNord
+        | SpellKeywords::SpellMind_FearVampire
+);
+
+pub const ICON_FROST: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicDamageFrost | SpellKeywords::ClassFrost | SpellKeywords::SpellDamage_Frost
+);
+
+pub const ICON_HEALING: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicRestoreHealth
+        | SpellKeywords::SpellHeal_Daedra
+        | SpellKeywords::SpellHeal_Living
+        | SpellKeywords::SpellHeal_LivingWater
+        | SpellKeywords::SpellHeal_Self
+        | SpellKeywords::SpellHeal_SelfCloak
+        | SpellKeywords::SpellHeal_Undead
+        | SpellKeywords::SpellCure
+);
+
+pub const ICON_HOLY: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellDamage_Holy | SpellKeywords::ClassHoly | SpellKeywords::MagicTurnUndead
+);
+
+pub const ICON_INVISIBILITY: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicInvisibility
+        | SpellKeywords::SpellStealth_Invisibility
+        | SpellKeywords::SpellStealth_InvisibilityDruid
+        | SpellKeywords::SpellStealth_InvisibilityDoomstone
+        | SpellKeywords::SpellStealth_InvisibilityVampire
+);
+
+pub const ICON_LIGHT: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::SpellLight | SpellKeywords::Archetype_Light);
+
+pub const ICON_PARALYZE: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicParalysis
+        | SpellKeywords::SpellMind_Paralysis
+        | SpellKeywords::SpellParalysis
+        | SpellKeywords::SpellParalysis_Druid
+);
+
+pub const ICON_ROOT: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::Archetype_Root | SpellKeywords::SpellCurse_DruidRoot);
+
+// pub const RUNE_SPELLS: EnumSet<SpellKeywords> = enum_set!(SpellKeywords::MagicRune);
+
+pub const ICON_SHOCK: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicDamageShock
+        | SpellKeywords::ClassShock
+        | SpellKeywords::SpellDamage_Shock
+        | SpellKeywords::SpellDamage_BloodShock
+);
+
+pub const ICON_STORM: EnumSet<SpellKeywords> = enum_set!(SpellKeywords::SpellDamage_ShockStorm);
+
+pub const ICON_SUMMON: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicSummonFamiliar
+        | SpellKeywords::MagicSummonFire
+        | SpellKeywords::MagicSummonFrost
+        | SpellKeywords::MagicSummonShock
+        | SpellKeywords::MagicSummonUndead
+        | SpellKeywords::SpellSummon_Construct
+        | SpellKeywords::SpellSummon_Creature
+        | SpellKeywords::SpellSummon_Daedra
+        | SpellKeywords::SpellSummon_Object
+        | SpellKeywords::SpellSummon_Spirit
+);
+
+pub const ICON_VAMPIRE: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassVampire
+        | SpellKeywords::MagicVampireDrain
+        | SpellKeywords::SpellShapechange_Vampire
+);
+
+pub const ICON_BLOOD: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::Spell_Blood | SpellKeywords::MagicVampireDrain);
+
+pub const ICON_VISION: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellEnhance_Sight
+        | SpellKeywords::SpellEnhance_SightKhajiit
+        | SpellKeywords::SpellEnhance_SightVampireBlood
+        | SpellKeywords::SpellEnhance_SightVampireShadow
+        | SpellKeywords::SpellEnhance_SightWerebeast
+);
+
+// ----------- spell packs
+
+// Natura
+// ClassDruid is critter summons
+
+pub const DARENII_ABYSS: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassShadow
+        | SpellKeywords::SpellCurse_Shadow
+        | SpellKeywords::SpellDamage_Shadow
+        | SpellKeywords::SpellDamage_ShadowCloak
+);
+pub const DARENII_ARCLIGHT: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellDamage_ShockArc
+        | SpellKeywords::SpellEnhance_DamageShockArc
+        | SpellKeywords::SpellDamage_ShockArcCloak
+);
+pub const DARENII_COLDHARBOUR: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::SpellDamage_FireCold);
+pub const DARENII_DESECRATION: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellDamage_Necrotic
+        | SpellKeywords::SpellDamage_Necrotic
+        | SpellKeywords::SpellDamage_NecroticFire
+);
+
+pub const DARENII_INQUISITION: EnumSet<SpellKeywords> = enum_set!(SpellKeywords::ClassHoly);
+pub const DARENII_LUNARIS: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellDamage_HolyLunar
+        | SpellKeywords::SpellDamage_HolyLunarCloak
+        | SpellKeywords::SpellEnhance_DamageHolyLunar
+);
+// necrom should use tentacles
+pub const DARENII_NECROM: EnumSet<SpellKeywords> =
+    enum_set!(SpellKeywords::SpellEnhance_Eldritch | SpellKeywords::SpellDamage_PoisonEldritch);
+
+// A Darenii pack & a Kittytail pack both use this.
+pub const DARENII_STELLARIS: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassAstral
+        | SpellKeywords::SpellDamage_HolyAstral
+        | SpellKeywords::SpellDamage_HolyAstralCloak
+        | SpellKeywords::DAR_SummonAstralWyrm
+);
+// Kittytail's constellation pack.
+pub const CONSTELLATION_SPELLS: EnumSet<SpellKeywords> = enum_set!();
+
+// ----------- color categories
+
+pub const COLOR_ASH: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassAsh
+        | SpellKeywords::SpellDamage_Ash
+        | SpellKeywords::SpellDamage_AshCloak
+        | SpellKeywords::SpellDamage_AshFire
+        | SpellKeywords::SpellDamage_AshFireCloak
+);
+
+pub const COLOR_BLOOD: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassBlood
+        | SpellKeywords::SpellDamage_Blood
+        | SpellKeywords::SpellDamage_BloodCloak
+        | SpellKeywords::SpellDamage_BloodShock
+        | SpellKeywords::SpellDamage_BloodShockCloak
+);
+
+pub const COLOR_BOUND_ITEMS: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellBound_Ammo
+        | SpellKeywords::SpellBound_Armor
+        | SpellKeywords::SpellBound_MiscItem
+        | SpellKeywords::SpellBound_Weapon
+);
+
+pub const COLOR_EARTH: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassEarth
+        | SpellKeywords::SpellDamage_Earth
+        | SpellKeywords::SpellDamage_EarthCloak
+);
+
+pub const COLOR_ELDRITCH: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellBound_Weapon
+        | SpellKeywords::SpellBound_Armor
+        | SpellKeywords::ClassArcane
+        | SpellKeywords::SpellDamage_Arcane
+        | SpellKeywords::SpellDamage_ArcaneFire
+        | SpellKeywords::SpellDamage_ArcaneFireCloak
+        | SpellKeywords::Archetype_Guide
+);
+
+pub const COLOR_FIRE: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassFire
+        | SpellKeywords::MagicDamageFire
+        | SpellKeywords::SpellDamage_Fire
+        | SpellKeywords::SpellDamage_FireCloak
+        | SpellKeywords::SpellDamage_FireCloakDunmer
+);
+
+pub const COLOR_FROST: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassFrost
+        | SpellKeywords::MagicDamageFrost
+        | SpellKeywords::MagicSummonFrost
+        | SpellKeywords::SpellDamage_Frost
+        | SpellKeywords::SpellDamage_FrostCloak
+        | SpellKeywords::SpellDamage_FrostFire
+        | SpellKeywords::SpellDamage_FrostFireCloak
+        | SpellKeywords::SpellDamage_FireCold
+        | SpellKeywords::SpellDamage_FireColdCloak
+        | SpellKeywords::SpellEnhance_DamageFrost
+);
+
+pub const COLOR_HOLY: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassHoly
+        | SpellKeywords::SpellDamage_Holy
+        | SpellKeywords::SpellDamage_HolyAstral
+        | SpellKeywords::SpellDamage_HolyAstralCloak
+);
+
+pub const COLOR_NECROTIC: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::SpellEnhance_Eldritch
+        | SpellKeywords::SpellDamage_Necrotic
+        | SpellKeywords::SpellDamage_NecroticCloak
+        | SpellKeywords::SpellDamage_NecroticFire
+        | SpellKeywords::SpellDamage_NecroticFireCloak
+);
+
+pub const COLOR_POISON: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassPoison
+        | SpellKeywords::SpellDamage_Poison
+        | SpellKeywords::SpellDamage_PoisonBug
+        | SpellKeywords::SpellDamage_PoisonBugCloak
+        | SpellKeywords::SpellDamage_PoisonCloak
+        | SpellKeywords::SpellDamage_PoisonDoomstone
+        | SpellKeywords::SpellDamage_PoisonEldritch
+        | SpellKeywords::SpellDamage_PoisonEldritchCloak
+);
+
+pub const COLOR_SHADOW: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassNecromancy
+        | SpellKeywords::ClassShadow
+        | SpellKeywords::SpellCurse_Shadow
+        | SpellKeywords::SpellDamage_Shadow
+        | SpellKeywords::SpellDamage_ShadowCloak
+);
+
+pub const COLOR_SHOCK: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::MagicDamageShock
+        | SpellKeywords::ClassShock
+        | SpellKeywords::SpellDamage_Shock
+        | SpellKeywords::SpellDamage_ShockCloak
+        | SpellKeywords::SpellDamage_ShockStorm
+        | SpellKeywords::SpellDamage_ShockStormCloak
+);
+
+pub const COLOR_SUN: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassHoly | SpellKeywords::MAG_MagicDamageSun | SpellKeywords::SpellDamage_Light
+);
+
+pub const COLOR_WATER: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassWater
+        | SpellKeywords::IconWater
+        | SpellKeywords::SpellDamage_Steam
+        | SpellKeywords::SpellDamage_Water
+        | SpellKeywords::SpellDamage_WaterCloak
+);
+
+pub const COLOR_WIND: EnumSet<SpellKeywords> = enum_set!(
+    SpellKeywords::ClassWind
+        | SpellKeywords::IconWind
+        | SpellKeywords::SpellDamage_Wind
+        | SpellKeywords::SpellDamage_WindCloak
+        | SpellKeywords::SpellDamage_Sonic
+);
+
+pub fn icon_for_tagset(tagset: &EnumSet<SpellKeywords>) -> Option<Icon> {
+    if tagset.contains(SpellKeywords::Power_Bats) {
+        Some(Icon::PowerBats)
+    } else if tagset.contains(SpellKeywords::SpellShapechange_Werebeast) {
+        Some(Icon::PowerWerewolf)
+    } else if tagset.contains(SpellKeywords::Power_RevertForm) {
+        Some(Icon::PowerRevertForm)
+    } else if tagset.contains(SpellKeywords::PowerAction_Bag) {
+        Some(Icon::ArmorBackpack)
+    } else if tagset.contains(SpellKeywords::PowerAction_Bard) {
+        Some(Icon::MiscLute)
+    } else if tagset.contains(SpellKeywords::PowerAction_Bathe) {
+        // I have no joke here; I just like saying power wash.
+        Some(Icon::PowerWash)
+    } else if tagset.contains(SpellKeywords::PowerAction_Bless) {
+        Some(Icon::ArmorBackpack) // TODO bless icon
+    } else if tagset.contains(SpellKeywords::PowerAction_BuryCorpse) {
+        Some(Icon::ToolShovel)
+    } else if tagset.contains(SpellKeywords::PowerAction_Campfire) {
+        Some(Icon::MiscCampfire)
+    // } else if tagset.contains(SpellKeywords::PowerAction_Coin) {
+    // Some(Icon::MiscCoin)
+    // } else if tagset.contains(SpellKeywords::PowerAction_CommandFollower) {
+    // Some(Icon::ArmorBackpack) // TODO command icon
+    // } else if tagset.contains(SpellKeywords::PowerAction_Craft) {
+    // Some(Icon::ArmorBackpack) // TODO craft icon
+    } else if tagset.contains(SpellKeywords::PowerAction_FillWater) {
+        Some(Icon::PowerFillBottles)
+    } else if tagset.contains(SpellKeywords::PowerAction_HarvestCorpse) {
+        Some(Icon::ToolShovel) // TODO wrong!
+    } else if tagset.contains(SpellKeywords::PowerAction_HarvestGather) {
+        Some(Icon::ToolSickle)
+    } else if tagset.contains(SpellKeywords::PowerAction_HarvestWood) {
+        Some(Icon::WeaponWoodAxe)
+    } else if tagset.contains(SpellKeywords::PowerAction_Horse) {
+        Some(Icon::PowerHorse)
+    } else if tagset.contains(SpellKeywords::PowerAction_Lantern) {
+        Some(Icon::MiscLantern)
+    } else if tagset.contains(SpellKeywords::PowerAction_PitchTent) {
+        Some(Icon::MiscTent)
+    } else if tagset.contains(SpellKeywords::PowerAction_PeekKeyhole) {
+        Some(Icon::PowerPeek)
+    } else if tagset.contains(SpellKeywords::PowerAction_Potion) {
+        Some(Icon::PotionDefault)
+    } else if tagset.contains(SpellKeywords::PowerAction_Pray) {
+        Some(Icon::PowerPray)
+    } else if tagset.contains(SpellKeywords::PowerAction_Relax) {
+        Some(Icon::PowerPeek)
+    // } else if tagset.contains(SpellKeywords::PowerAction_Speech) {
+    //     Some(Icon::PowerPeek)
+    // } else if tagset.contains(SpellKeywords::PowerAction_StatusFrostfall) {
+    //     Some(Icon::PowerPeek)
+    // } else if tagset.contains(SpellKeywords::PowerAction_StatusSunhelm) {
+    //     Some(Icon::PowerPeek)
+    } else if tagset.contains(SpellKeywords::PowerAction_TameAnimal) {
+        Some(Icon::ShoutAnimalAllegiance)
+        // } else if tagset.contains(SpellKeywords::PowerAction_Train) {
+        //     Some(Icon::PowerPeek)
+        // } else if tagset.contains(SpellKeywords::PowerAction_WeaponGrip) {
+        //     Some(Icon::WeaponGrip)
+    } else if !tagset.is_disjoint(ICON_CLOAK) {
+        Some(Icon::ArmorCloak)
+    } else if !tagset.is_disjoint(ICON_BUFF) {
+        Some(Icon::SpellStamina)
+    } else if !tagset.is_disjoint(ICON_CONTROL) {
+        Some(Icon::SpellControl)
+    } else if !tagset.is_disjoint(ICON_FEAR) {
+        Some(Icon::SpellFear)
+    } else if !tagset.is_disjoint(ICON_LIGHT) {
+        Some(Icon::SpellLight)
+    } else if !tagset.is_disjoint(ICON_SUMMON) {
+        Some(Icon::SpellSummon)
+    } else if !tagset.is_disjoint(ICON_PARALYZE) {
+        Some(Icon::SpellParalyze)
+    } else if !tagset.is_disjoint(ICON_VISION) {
+        Some(Icon::SpellEagleEye)
+        // bound weapons
+    } else if tagset.contains(SpellKeywords::SpellBound_Weapon) {
+        if tagset.contains(SpellKeywords::BoundBattleAxe) {
+            Some(Icon::WeaponAxeTwoHanded)
+        } else if tagset.contains(SpellKeywords::BoundBow) {
+            Some(Icon::WeaponBow)
+        } else if tagset.contains(SpellKeywords::BoundDagger) {
+            Some(Icon::WeaponDagger)
+        } else if tagset.contains(SpellKeywords::BoundGreatsword) {
+            Some(Icon::WeaponSwordTwoHanded)
+        } else if tagset.contains(SpellKeywords::BoundHammer) {
+            Some(Icon::WeaponHammer)
+        } else if tagset.contains(SpellKeywords::BoundMace) {
+            Some(Icon::WeaponMace)
+        } else if tagset.contains(SpellKeywords::BoundShield) {
+            Some(Icon::ArmorShieldHeavy)
+        } else if tagset.contains(SpellKeywords::BoundSword) {
+            Some(Icon::WeaponSwordOneHanded)
+        } else if tagset.contains(SpellKeywords::BoundWarAxe) {
+            Some(Icon::WeaponAxeOneHanded)
+        } else {
+            Some(Icon::WeaponSwordOneHanded)
+        }
+    } else if tagset.contains(SpellKeywords::SpellBound_Armor) {
+        Some(Icon::ArmorShieldHeavy)
+    } else if !tagset.is_disjoint(ICON_HEALING) {
+        Some(Icon::SpellHeal)
+    } else if !tagset.is_disjoint(ICON_EARTH) {
+        Some(Icon::SpellEarth)
+    } else if !tagset.is_disjoint(ICON_STORM) {
+        Some(Icon::SpellLightningBlast)
+    } else if !tagset.is_disjoint(ICON_VAMPIRE) {
+        Some(Icon::PowerVampire)
+    } else if !tagset.is_disjoint(ICON_DRUID) {
+        Some(Icon::SpellLeaves)
+    } else if !tagset.is_disjoint(ICON_ROOT) {
+        Some(Icon::SpellRoot)
+    } else if !tagset.is_disjoint(ICON_CIRCLE) {
+        Some(Icon::SpellCircle)
+    } else if !tagset.is_disjoint(ICON_HOLY) {
+        Some(Icon::SpellSun)
+    // next one-off vanilla spells
+    } else if tagset.contains(SpellKeywords::Archetype_Teleport) {
+        Some(Icon::SpellTeleport)
+    } else if tagset.contains(SpellKeywords::SpellTime) {
+        Some(Icon::SpellTime)
+    } else if tagset.contains(SpellKeywords::Archetype_Detect) {
+        Some(Icon::SpellDetect)
+    } else if tagset.contains(SpellKeywords::Archetype_WeaponBuff) {
+        Some(Icon::SpellSharpen)
+    } else if tagset.contains(SpellKeywords::Archetype_Guide) {
+        Some(Icon::SpellWisp)
+    } else if tagset.contains(SpellKeywords::Archetype_CarryWeight) {
+        Some(Icon::SpellFeather)
+    } else if tagset.contains(SpellKeywords::Archetype_Cure) {
+        Some(Icon::SpellCure)
+    } else if tagset.contains(SpellKeywords::SpellReanimate) {
+        Some(Icon::SpellReanimate)
+    } else if tagset.contains(SpellKeywords::Archetype_Reflect) {
+        Some(Icon::SpellReflect)
+    } else if tagset.contains(SpellKeywords::MagicRune) {
+        Some(Icon::SpellRune)
+    } else if tagset.contains(SpellKeywords::Archetype_Silence) {
+        Some(Icon::SpellSilence)
+    } else if tagset.contains(SpellKeywords::SpellSoulTrap) {
+        Some(Icon::SpellSoultrap)
+    } else if tagset.contains(SpellKeywords::MagicSlow) {
+        Some(Icon::SpellSlow)
+    } else if tagset.contains(SpellKeywords::MagicNightEye) {
+        Some(Icon::SpellDetect)
+    } else if tagset.contains(SpellKeywords::MagicTurnUndead) {
+        Some(Icon::SpellSun)
+    } else if tagset.contains(SpellKeywords::MagicWard) {
+        Some(Icon::SpellWard)
+    } else if tagset.contains(SpellKeywords::MagicWeaponSpeed) {
+        Some(Icon::ShoutElementalFury)
+    } else if tagset.contains(SpellKeywords::MagicSummonFamiliar) {
+        Some(Icon::SpellSummon)
+    } else if tagset.contains(SpellKeywords::MagicSummonUndead) {
+        Some(Icon::SpellReanimate)
+    } else if tagset.contains(SpellKeywords::Spell_Blood) {
+        Some(Icon::SpellBlood)
+    } else if tagset.contains(SpellKeywords::SpellShapechange_Werebeast) {
+        Some(Icon::PowerWerewolf)
+        // next icon packs
+    } else if !tagset.is_disjoint(DARENII_ARCLIGHT) {
+        Some(Icon::SpellArclight)
+    } else if !tagset.is_disjoint(DARENII_DESECRATION) {
+        Some(Icon::SpellDesecration)
+    } else if !tagset.is_disjoint(DARENII_STELLARIS) {
+        Some(Icon::SpellStars)
+    } else if !tagset.is_disjoint(DARENII_LUNARIS) {
+        Some(Icon::SpellMoon)
+    } else if !tagset.is_disjoint(CONSTELLATION_SPELLS) {
+        Some(Icon::SpellConstellation)
+    // now really generic damage spells
+    } else if !tagset.is_disjoint(ICON_FIRE) {
+        Some(Icon::SpellFire)
+    } else if !tagset.is_disjoint(ICON_SHOCK) {
+        Some(Icon::SpellShock)
+    } else if !tagset.is_disjoint(ICON_FROST) {
+        Some(Icon::SpellFrost)
+    } else {
+        None
+    }
+}
+
+pub fn color_for_tagset(tagset: &EnumSet<SpellKeywords>) -> Option<InvColor> {
+    if !tagset.is_disjoint(DARENII_ARCLIGHT) {
+        Some(InvColor::ShockArc)
+    } else if !tagset.is_disjoint(COLOR_ASH) {
+        Some(InvColor::Ash)
+    } else if !tagset.is_disjoint(COLOR_BLOOD) {
+        Some(InvColor::Blood)
+    } else if !tagset.is_disjoint(COLOR_BOUND_ITEMS) {
+        Some(InvColor::Bound)
+    } else if !tagset.is_disjoint(COLOR_EARTH) {
+        Some(InvColor::Brown)
+    } else if !tagset.is_disjoint(COLOR_ELDRITCH) {
+        Some(InvColor::Eldritch)
+    } else if !tagset.is_disjoint(COLOR_HOLY) {
+        Some(InvColor::Holy)
+    } else if !tagset.is_disjoint(DARENII_LUNARIS) {
+        Some(InvColor::Lunar)
+    } else if !tagset.is_disjoint(COLOR_NECROTIC) {
+        Some(InvColor::Necrotic)
+    } else if !tagset.is_disjoint(COLOR_POISON) {
+        Some(InvColor::Poison)
+    } else if !tagset.is_disjoint(COLOR_SHADOW) {
+        Some(InvColor::Shadow)
+    } else if !tagset.is_disjoint(COLOR_SUN) {
+        Some(InvColor::Sun)
+    } else if !tagset.is_disjoint(COLOR_WATER) {
+        Some(InvColor::Water)
+    } else if !tagset.is_disjoint(COLOR_WIND) {
+        Some(InvColor::Gray)
+    } else if !tagset.is_disjoint(ICON_HEALING) {
+        Some(InvColor::Green)
+    } else if !tagset.is_disjoint(COLOR_FIRE) {
+        Some(InvColor::Fire)
+    } else if !tagset.is_disjoint(COLOR_FROST) {
+        Some(InvColor::Frost)
+    } else if !tagset.is_disjoint(COLOR_SHOCK) {
+        Some(InvColor::Shock)
+    } else {
+        None
+    }
+}

@@ -1,0 +1,128 @@
+# Hexagon lower right corner.
+
+# Global scaling factor: the whole hud size changes when you change this.
+global_scale = 0.5
+
+# Typeface to use. Must be truetype. Must be in resources/fonts.
+font = "Inter-Light.ttf"
+# Point size to use for all name text. Scales with the global_scale.
+font_size = 37.0
+
+# A named location for the HUD. Use this as a shortcut for common anchor
+# points. These work no matter what the player's screen resolution is, because this
+# is turned into a location point at run-time.
+# Values: bottom_left, bottom_right, top_left, top_right, center
+anchor_name = "bottom_right"
+# You can also specify the anchor point like this if a named anchor point
+# doesn't work for your layout. These values are NOT scaled.
+# anchor = { x = 2000.0, y = 800.0 }
+
+# The size of the hud, in pixels. Will be scaled.
+size = { x = 600.0, y = 600.0 }
+
+# The HUD background color. Red, green, blue, alpha. Alpha of zero means not drawn.
+bg_color = { r = 255, g = 255, b = 255, a = 128 }
+
+# Enable any of these you need text rendering for.
+chinese_full_glyphs = false
+simplified_chinese_glyphs = false
+cyrillic_glyphs = false
+japanese_glyphs = false
+korean_glyphs = false
+thai_glyphs = false
+vietnamese_glyphs = false
+
+[[layouts]]
+name = "Shouts/Powers"
+element = { repr = 0 }
+text_align = "center"
+offset = { x = -178.74, y = -100 }
+size = { x = 200.0 , y = 200.0 }
+bg_color = { r = 0, g = 0, b = 0, a = 0 }
+icon_color = { r = 200, g = 200, b = 200, a = 255 }
+icon_size = { x = 100.0, y = 100.0 }
+count_color = { r = 200, g = 200, b = 200, a = 0 }
+count_font_size = 20.0
+count_offset = { x = 0.0, y = 0.0 }
+hotkey_bg_color = { r = 0, g = 0, b = 0, a = 0 }
+hotkey_color = { r = 200, g = 200, b = 200, a = 0 }
+hotkey_size = { x = 30.0, y = 30.0 }
+hotkey_offset = { x = 0.0, y = -78.0 }
+name_color = { r = 200, g = 200, b = 200, a = 255 }
+name_offset = { x = 120, y = -150 }
+
+[[layouts]]
+name = "Consumables"
+element = { repr = 1 }
+text_align = "center"
+offset = { x = 178.74, y = -100.0 }
+size = { x = 200.0 , y = 200.0 }
+bg_color = { r = 0, g = 0, b = 0, a = 0 }
+icon_color = { r = 200, g = 200, b = 200, a = 255 }
+icon_size = { x = 100.0, y = 100.0 }
+count_color = { r = 200, g = 200, b = 200, a = 255 }
+count_font_size = 50.0
+count_offset = { x = 55.0, y = -25.0 }
+hotkey_bg_color = { r = 0, g = 0, b = 0, a = 0 }
+hotkey_color = { r = 200, g = 200, b = 200, a = 0 }
+hotkey_offset = { x = 0.0, y = -78.0 }
+hotkey_size = { x = 30.0, y = 30.0 }
+name_color = { r = 200, g = 200, b = 200, a = 255 }
+name_offset = { x = -260, y = -110 }
+
+[[layouts]]
+name = "Left Hand"
+element = { repr = 2 }
+text_align = "center"
+offset = { x = -178.74, y = 100.0 }
+size = { x = 200.0 , y = 200.0 }
+bg_color = { r = 0, g = 0, b = 0, a = 0 }
+count_color = { r = 200, g = 200, b = 200, a = 255 }
+count_font_size = 20.0
+count_offset = { x = 0.0, y = 0.0 }
+hotkey_bg_color = { r = 0, g = 0, b = 0, a = 0 }
+hotkey_color = { r = 200, g = 200, b = 200, a = 0 }
+hotkey_offset = { x = 0.0, y = 78.0 }
+hotkey_size = { x = 30.0, y = 30.0 }
+icon_color = { r = 200, g = 200, b = 200, a = 255 }
+icon_size = { x = 100.0, y = 100.0 }
+name_color = { r = 200, g = 200, b = 200, a = 255 }
+name_offset = { x = 98.74, y = 110 }
+
+[[layouts]]
+name = "Right Hand"
+element = { repr = 3 }
+text_align = "center"
+offset = { x = 178.74, y = 100.0 }
+size = { x = 200.0 , y = 200.0 }
+bg_color = { r = 0, g = 0, b = 0, a = 0 }
+count_color = { r = 200, g = 200, b = 200, a = 255 }
+count_font_size = 20.0
+count_offset = { x = 0.0, y = 0.0 }
+hotkey_bg_color = { r = 0, g = 0, b = 0, a = 0 }
+hotkey_color = { r = 200, g = 200, b = 200, a = 0 }
+hotkey_offset = { x = 0.0, y = 78.0 }
+hotkey_size = { x = 30.0, y = 30.0 }
+icon_color = { r = 200, g = 200, b = 200, a = 255 }
+icon_size = { x = 100.0, y = 100.0 }
+name_color = { r = 200, g = 200, b = 200, a = 255 }
+name_offset = { x = -258.74, y = 60.0 }
+
+[[layouts]]
+name = "Ammo"
+element = { repr = 4 }
+text_align = "center"
+offset = { x = 0.0, y = 0.0 }
+size = { x = 200.0 , y = 200.0 }
+bg_color = { r = 0, g = 0, b = 0, a = 0 }
+count_color = { r = 200, g = 200, b = 200, a = 255 }
+count_font_size = 40.0
+count_offset = { x = 20.0, y = 20.0 }
+hotkey_bg_color = { r = 0, g = 0, b = 0, a = 0 }
+hotkey_color = { r = 200, g = 200, b = 200, a = 0 }
+hotkey_offset = { x = 0.0, y = 0.0 }
+hotkey_size = { x = 30.0, y = 30.0 }
+icon_color = { r = 200, g = 200, b = 200, a = 255 }
+icon_size = { x = 100.0, y = 100.0 }
+name_color = { r = 200, g = 200, b = 200, a = 0 }
+name_offset = { x = 0.0, y = 50.0 }

@@ -45,24 +45,17 @@ jobs:
                   buildPreset: "vs2022-windows"
                   buildPresetCmdString: "['--build', '--preset', '$[env.BUILD_PRESET_NAME]', '--config', 'Release']"
 
-            - name: build mod directory
-              shell: bash
+            - name: package compatibility patch
+              shell: pwsh
               run: |
-                  mkdir -p SoulsyHUD
-                  cp -r installer/* SoulsyHUD/
-                  cp build/Release/SoulsyHUD.dll SoulsyHUD/core/SKSE/plugins/SoulsyHUD.dll
-                  cp build/Release/SoulsyHUD.pdb SoulsyHUD/core/SKSE/plugins/SoulsyHUD.pdb
-                  rm -rf SoulsyHUD/core/scripts/source/TESV_Papyrus_Flags.flg
+                  python scripts/package_patch.py --build-dir build/Release --output-dir releases
 
-            - name: 7zip compress it
-              run: 7z a SoulsyHUD_fomod.7z ./SoulsyHUD
-
-            - name: create a tagged release and upload the archive
+            - name: create a tagged release and upload the patch archive
               uses: ncipollo/release-action@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  name: SoulsyHUD ${{ github.ref_name }}
+                  name: SoulsyHUD ${{ github.ref_name }} (Skyrim 1.7.104.0 Patch)
                   tag: ${{ github.ref_name }}
                   draft: true
-                  artifacts: "SoulsyHUD.7z"
+                  artifacts: "releases/*.zip"

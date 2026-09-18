@@ -267,3 +267,20 @@ target_precompile_headers(
     PRIVATE
     src/PCH.h
 )
+
+find_package(Python3 COMPONENTS Interpreter QUIET)
+if(Python3_FOUND)
+    add_custom_target(
+        package-patch
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/package_patch.py --build-dir $<TARGET_FILE_DIR:${PROJECT_NAME}> --output-dir ${CMAKE_CURRENT_BINARY_DIR}/package
+        DEPENDS ${PROJECT_NAME}
+        COMMENT "Packaging SoulsyHUD Skyrim 1.7.104.0 compatibility patch..."
+    )
+else()
+    add_custom_target(
+        package-patch
+        COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/package_patch.py --build-dir $<TARGET_FILE_DIR:${PROJECT_NAME}> --output-dir ${CMAKE_CURRENT_BINARY_DIR}/package
+        DEPENDS ${PROJECT_NAME}
+        COMMENT "Packaging SoulsyHUD Skyrim 1.7.104.0 compatibility patch..."
+    )
+endif()

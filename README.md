@@ -52,7 +52,7 @@ This patch is an overwrite patch for the original mod:
 - `spdlog`, `imgui` (installed via vcpkg automatically)
 - `CommonLibSSE-NG` (pulled as a git submodule in `extern/CommonLibSSE-NG`)
 
-### Build Steps
+### Build and Package Steps
 ```powershell
 # Clone the repository with submodules
 git clone --recursive https://github.com/DeadOnKeyboard1/SoulsyHUD_0.16.10_Skyrim_1.7.104.0.git
@@ -63,9 +63,23 @@ cmake --preset vs2022-windows
 
 # Build Release DLL and PDB
 cmake --build --preset vs2022-windows --config Release
+
+# Package the Vortex/MO2-ready patch ZIP
+# Option A: via CMake target
+cmake --build --preset vs2022-windows --config Release --target package-patch
+
+# Option B: via packaging script
+python scripts/package_patch.py
+
+# Option C: via just
+just patch
 ```
 
-The compiled `SoulsyHUD.dll` and `SoulsyHUD.pdb` will be placed in `build/Release/`.
+The resulting compatibility patch ZIP (`SoulsyHUD_0.16.10_Skyrim_1.7.104.0.zip`) contains only the updated native plugin, debug symbols, MCM keymap config, and required legal notices:
+- `SKSE/plugins/SoulsyHUD.dll`
+- `SKSE/plugins/SoulsyHUD.pdb`
+- `MCM/Config/SoulsyHUD/config.json`
+- `licenses/...`
 
 ---
 

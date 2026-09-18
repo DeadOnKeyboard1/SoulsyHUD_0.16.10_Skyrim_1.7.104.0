@@ -10,7 +10,7 @@ help:
     just -l
 
 # Build everything from a clean repo. One-stop shop.
-full-build: tools cmake build archive
+full-build: tools cmake build patch
 
 # Install required tools.
 @tools:
@@ -112,43 +112,12 @@ check-translations:
 	mcm-meta-helper --moddir installer/core check all
 
 
-# Create a mod archive and 7zip it. Requires bash.
-[unix]
-archive:
-    #!/usr/bin/env bash
-    set -e
-    version=$(tomato get package.version Cargo.toml)
-    release_name=SoulsyHUD_v${version}
-    mkdir -p "releases/$release_name"
-    cp -rp installer/* "releases/${release_name}/"
-    cp -p build/Release/SoulsyHUD.dll "releases/${release_name}/core/SKSE/plugins/SoulsyHUD.dll"
-    cp -p build/Release/SoulsyHUD.pdb "releases/${release_name}/core/SKSE/plugins/SoulsyHUD.pdb"
-    rm "releases/${release_name}/core/scripts/source/TESV_Papyrus_Flags.flg"
-    cd releases
-    rm -f "$release_name"_fomod.7z
-    7zz a "$release_name"_fomod.7z "$release_name"
-    rm -rf "$release_name"
-    cd ..
-    echo "Mod archive for v${version} ready at releases/${release_name}.7z"
+# Create the compatibility patch archive (Vortex/MO2-ready ZIP).
+patch:
+    python scripts/package_patch.py
 
-# Make the two icon pack archives.
-packs:
-	#!/usr/bin/env bash
-	set -e
-	ar="7z"
-	if [ -z $(which $ar) ]; then
-		ar="7zz"
-	fi
-	mkdir -p releases/SoulsyHUD_{soulsy,thicc}_icon_pack/SKSE/plugins/resources/icons
-	rsync -a installer/icon-pack-soulsy/ releases/SoulsyHUD_soulsy_icon_pack/SKSE/plugins/resources/icons
-	rsync -a installer/icon-pack-thicc/ releases/SoulsyHUD_thicc_icon_pack/SKSE/plugins/resources/icons
-	cd releases
-	rm -f SoulsyHUD_thicc_icon_pack.7z
-	"$ar" a SoulsyHUD_thicc_icon_pack.7z SoulsyHUD_thicc_icon_pack
-	rm -f SoulsyHUD_soulsy_icon_pack.7z
-	"$ar" a SoulsyHUD_soulsy_icon_pack.7z SoulsyHUD_soulsy_icon_pack
-	rm -rf SoulsyHUD_soulsy_icon_pack/ SoulsyHUD_thicc_icon_pack/
-	echo "Two mod packs archived in releases/"
+# Alias for compatibility patch packaging.
+archive: patch
 
 
 # Use spriggit to dump the plugin to text.
@@ -170,9 +139,6 @@ spotless: clean
 
 # The rest of these are stubs so windows doesn't just hork.
 
-[windows]
-@archive:
-    echo "Run this recipe in a bash shell."
 
 [windows]
 @check-translations:
